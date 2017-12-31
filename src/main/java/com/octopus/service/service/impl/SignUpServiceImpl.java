@@ -7,42 +7,43 @@ import org.springframework.stereotype.Service;
 import com.octopus.service.domain.model.Role;
 import com.octopus.service.domain.model.User;
 import com.octopus.service.domain.model.UserRole;
-import com.octopus.service.domain.repository.RoleRepository;
-import com.octopus.service.domain.repository.UserRepository;
-import com.octopus.service.domain.repository.UserRoleRepository;
+import com.octopus.service.domain.repository.RoleRepo;
+import com.octopus.service.domain.repository.UserRepo;
+import com.octopus.service.domain.repository.UserRoleRepo;
 import com.octopus.service.service.SignUpService;
 
 @Service("userSignUpService")
 public class SignUpServiceImpl implements SignUpService {
 	
 	@Autowired
-	UserRepository userRepository;
+	UserRepo userRepo;
 	
 	@Autowired
-	RoleRepository roleRepository;
+	RoleRepo roleRepo;
 	
 	@Autowired
-	UserRoleRepository userRoleRepository;
+	UserRoleRepo userRoleRepo;
 	
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
 
 	@Override
-	public void createNewAccount(User newUser) {
+	public User createNewAccount(User newUser) {
 		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 		newUser.setUsername(newUser.getMobileNumber());
 		newUser.setEnabled(true);
-		newUser = userRepository.saveAndFlush(newUser);
+		newUser = userRepo.saveAndFlush(newUser);
 		saveUserRole(newUser);
+		return newUser;
 	}
 
 	@Override
 	public void saveUserRole(User createdUser) {
 		UserRole userRoleMapping = new UserRole();
-		Role role = roleRepository.getAuthorityByName("ROLE_USER");
+		Role role = roleRepo.getAuthorityByName("ROLE_USER");
 		userRoleMapping.setAuthority(role);
 		userRoleMapping.setUser(createdUser);
-		userRoleRepository.saveAndFlush(userRoleMapping);
+		userRoleRepo.saveAndFlush(userRoleMapping);
 	}
 
 }
