@@ -4,8 +4,8 @@ import com.octopus.service.domain.model.User;
 
 public interface SignUpService {
 	
-	public void createNewAccount(User newUser);
+	User createNewAccount(User newUser);
 	
-	public void saveUserRole(User createdUser);
+	void saveUserRole(User createdUser);
 
 }
