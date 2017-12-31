@@ -1,5 +1,8 @@
 package com.octopus.service.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,6 +13,7 @@ import org.springframework.mobile.device.Device;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -52,7 +56,17 @@ public class AuthController {
                         authenticationRequest.getPassword()
                 )
         );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        //role based changes
+        List<GrantedAuthority> updatedAuthorities = new ArrayList<GrantedAuthority>();
+        for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
+        	updatedAuthorities.add(grantedAuthority);
+		}
+        final Authentication updatedAuth = authenticationManager
+        		.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),authenticationRequest.getPassword(), updatedAuthorities));
+        SecurityContextHolder.getContext().setAuthentication(updatedAuth);
+        //changes ends here
+        //old... below one line code
+        //SecurityContextHolder.getContext().setAuthentication(authentication);
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails, device);
         final User user = userService.getUserByToken(token);
