@@ -3,7 +3,7 @@ package com.octopus.service.util;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class AppConstants {
+public final class AppConstants {
 	
 	private AppConstants() {
 		//Hiding this class
