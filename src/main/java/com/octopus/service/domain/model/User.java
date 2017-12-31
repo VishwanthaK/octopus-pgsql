@@ -30,6 +30,9 @@ public class User extends BaseModel {
     private String password;
     private List<Role> authorities;
     private Boolean enabled;
+    
+    //mapped by objects
+    private List<UserAddress> userAddress;
    
 	
 	@Column(name = "fullname", length = 50)
@@ -103,4 +106,15 @@ public class User extends BaseModel {
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
+	
+    @OneToMany(mappedBy = "userObj", fetch = FetchType.LAZY)
+    public List<UserAddress> getUserAddress() {
+		return userAddress;
+	}
+	public void setUserAddress(List<UserAddress> userAddress) {
+		this.userAddress = userAddress;
+	}
+    
+    
+    
 }
