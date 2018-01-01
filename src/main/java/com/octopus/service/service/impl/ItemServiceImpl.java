@@ -8,15 +8,19 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.octopus.service.domain.model.Item;
+import com.octopus.service.domain.model.ItemType;
 import com.octopus.service.domain.repository.ItemRepo;
+import com.octopus.service.domain.repository.ItemTypeRepo;
 import com.octopus.service.response.filter.ItemFilter;
 import com.octopus.service.service.ItemService;
+import com.octopus.service.util.AppConstants;
 
 @Service
 public class ItemServiceImpl implements ItemService {
 	
 	@Autowired
 	private ItemRepo itemRepo;
+	
 	
 	@Override
 	public void addItem(String token, Item item) {
@@ -35,5 +39,6 @@ public class ItemServiceImpl implements ItemService {
 		List<Item> items = itemRepo.getItembyType(itemtypeId, pageable);
  		return ItemFilter.filterItemEntityList(items);
 	}
+
 
 }

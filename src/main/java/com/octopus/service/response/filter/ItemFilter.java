@@ -8,7 +8,9 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.octopus.service.domain.model.Gst;
 import com.octopus.service.domain.model.Item;
+import com.octopus.service.domain.model.ItemType;
 import com.octopus.service.domain.model.UserAddress;
 
 public class ItemFilter {
@@ -45,5 +47,29 @@ public class ItemFilter {
 		responseJson = writer.writeValueAsString(items);
 		return responseJson;
     }
+	
+	public static String filterItemTypeEntityList(List<ItemType> itemTypes) 
+			throws JsonProcessingException {   
+		ObjectWriter writer = null;
+		String responseJson = null;
+		ObjectMapper mapper = new ObjectMapper();
+		FilterProvider filters = new SimpleFilterProvider()  
+			.addFilter("ITEM_TYPE_FILTER",SimpleBeanPropertyFilter.serializeAllExcept(ITEM_TYPE_IGNORABLE_FLDS));
+		writer = mapper.writer(filters);
+		responseJson = writer.writeValueAsString(itemTypes);
+		return responseJson;
+    }
 
+	
+	public static String filterGstSlabsEntityList(List<Gst> gstSlabs) 
+			throws JsonProcessingException {   
+		ObjectWriter writer = null;
+		String responseJson = null;
+		ObjectMapper mapper = new ObjectMapper();
+		FilterProvider filters = new SimpleFilterProvider()  
+				.addFilter("GST_FILTER",SimpleBeanPropertyFilter.serializeAllExcept(GST_IGNORABLE_FLDS));
+		writer = mapper.writer(filters);
+		responseJson = writer.writeValueAsString(gstSlabs);
+		return responseJson;
+    }
 }

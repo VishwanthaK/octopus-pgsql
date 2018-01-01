@@ -37,7 +37,6 @@ public class ItemController {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping( value = "/{itemTypeId}",
 			method = RequestMethod.GET, 
-			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getItem(HttpServletRequest request, 
     		@PathVariable("itemTypeId") Long itemtypeId, 
