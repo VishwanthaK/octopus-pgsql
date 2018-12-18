@@ -75,9 +75,4 @@ public class ItemController {
 				AppResponse.SUCCESSFUL_ITEM_UPDATE);
         return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
 	}
-	
-	
-	
-	
-
 }

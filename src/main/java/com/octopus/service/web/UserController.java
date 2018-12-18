@@ -21,8 +21,6 @@ import com.octopus.service.service.UserService;
 @RequestMapping(value = "/user")
 public class UserController {
 	
-//	private SuccessResponse response = null;
-	
 	@Value("${token.header}")
     private String tokenHeader;
 	

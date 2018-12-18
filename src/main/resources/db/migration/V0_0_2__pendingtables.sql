@@ -1,9 +1,8 @@
-CREATE SEQUENCE user_address_seq;
 CREATE TABLE user_address (
-	id bigint NOT NULL DEFAULT NEXTVAL ('user_address_seq'),
+	id bigint(20) NOT NULL AUTO_INCREMENT,
 	record_status INT NOT NULL,
-	created_on TIMESTAMP(0) NOT NULL,
-	user_id bigint NOT NULL,
+	created_on DATETIME NOT NULL,
+	user_id bigint(20) NOT NULL,
 	alternate_contact_number varchar(50),
 	house_or_flat_no varchar(50) ,
 	building_or_house_name varchar(50) ,
@@ -15,22 +14,22 @@ CREATE TABLE user_address (
 	PRIMARY KEY (id)
 );
 
-CREATE SEQUENCE mstr_item_type_seq;
+
 CREATE TABLE mstr_item_type (
-	id bigint NOT NULL DEFAULT NEXTVAL ('mstr_item_type_seq'),
+	id bigint(20) NOT NULL AUTO_INCREMENT,
 	record_status INT NOT NULL,
-	created_on TIMESTAMP(0) NOT NULL,
+	created_on DATETIME NOT NULL,
 	type_name varchar(50) NOT NULL,
 	PRIMARY KEY (id)
 );
 
-CREATE SEQUENCE mstr_item_seq;
+
 CREATE TABLE mstr_item (
-	id bigint NOT NULL DEFAULT NEXTVAL ('mstr_item_seq'),
+	id bigint(20) NOT NULL AUTO_INCREMENT,
 	record_status INT NOT NULL,
-	created_on TIMESTAMP(0) NOT NULL,
-	gst_id bigint NOT NULL,
-	item_type_id bigint NOT NULL,
+	created_on DATETIME NOT NULL,
+	gst_id bigint(20) NOT NULL,
+	item_type_id bigint(20) NOT NULL,
 	name varchar(100) NOT NULL,
 	item_size varchar(20) NOT NULL,
 	is_available BOOLEAN NOT NULL,
@@ -42,39 +41,39 @@ CREATE TABLE mstr_item (
 	PRIMARY KEY (id)
 );
 
-CREATE SEQUENCE mstr_gst_seq;
+
 CREATE TABLE mstr_gst (
-	id bigint NOT NULL DEFAULT NEXTVAL ('mstr_gst_seq'),
+	id bigint(20) NOT NULL AUTO_INCREMENT,
 	record_status INT NOT NULL,
-	created_on TIMESTAMP(0) NOT NULL,
+	created_on DATETIME NOT NULL,
 	gst_value DECIMAL(4,2) NOT NULL,
 	PRIMARY KEY (id)
 );
 
-CREATE SEQUENCE item_images_seq;
+
 CREATE TABLE item_images (
-	id bigint NOT NULL DEFAULT NEXTVAL ('item_images_seq'),
+	id bigint(20) NOT NULL AUTO_INCREMENT,
 	record_status INT NOT NULL,
-	created_on TIMESTAMP(0) NOT NULL,
+	created_on DATETIME NOT NULL,
 	item_id bigint NOT NULL,
 	image_path varchar(100) NOT NULL,
 	PRIMARY KEY (id)
 );
 
-CREATE SEQUENCE order_history_seq;
+
 CREATE TABLE order_history (
-	id bigint NOT NULL DEFAULT NEXTVAL ('order_history_seq'),
+	id bigint(20) NOT NULL AUTO_INCREMENT,
 	record_status INT NOT NULL,
-	created_on TIMESTAMP(0) NOT NULL,
-	user_id bigint NOT NULL,
+	created_on DATETIME NOT NULL,
+	user_id bigint(20) NOT NULL,
 	user_address_id bigint NOT NULL,
-	item_id bigint NOT NULL,
+	item_id bigint(20) NOT NULL,
 	ordered_qty_type varchar(10) NOT NULL,
 	ordered_qty_value DECIMAL(10,2) NOT NULL,
-	committed_delivery_time TIMESTAMP(0) NOT NULL,
+	committed_delivery_time DATETIME NOT NULL,
 	order_status varchar(1) NOT NULL,
 	PRIMARY KEY (id)
-);
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 ALTER TABLE user_address ADD CONSTRAINT user_address_fk0 FOREIGN KEY (user_id) REFERENCES mstr_user(id);
 ALTER TABLE mstr_item ADD CONSTRAINT mstr_item_fk0 FOREIGN KEY (gst_id) REFERENCES mstr_gst(id);
