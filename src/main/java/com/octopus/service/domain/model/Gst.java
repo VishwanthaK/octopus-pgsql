@@ -14,13 +14,13 @@ public class Gst extends BaseModel {
 	
 	private static final long serialVersionUID = 304161930492071317L;
 	
-	private Integer gstValue;
+	private Double gstValue;
 
 	@Column(name = "gst_value")
-	public Integer getGstValue() {
+	public Double getGstValue() {
 		return gstValue;
 	}
-	public void setGstValue(Integer gstValue) {
+	public void setGstValue(Double gstValue) {
 		this.gstValue = gstValue;
 	}
 }

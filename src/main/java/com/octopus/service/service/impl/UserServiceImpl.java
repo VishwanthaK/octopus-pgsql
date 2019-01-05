@@ -10,8 +10,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.octopus.service.domain.JwtUser;
 import com.octopus.service.domain.model.User;
 import com.octopus.service.domain.model.UserAddress;
-import com.octopus.service.domain.repository.UserAddressRepo;
-import com.octopus.service.domain.repository.UserRepo;
+import com.octopus.service.domain.repository.UserAddressRepository;
+import com.octopus.service.domain.repository.UserRepository;
 import com.octopus.service.exception.OctopusPermissionException;
 import com.octopus.service.response.filter.UserFilter;
 import com.octopus.service.security.JwtTokenUtil;
@@ -27,10 +27,10 @@ public class UserServiceImpl implements UserService {
     private UserDetailsService userDetailsService;
 	
 	@Autowired
-	private UserRepo userRepo;
+	private UserRepository userRepository;
 	
 	@Autowired
-	private UserAddressRepo userAddressRepo;
+	private UserAddressRepository userAddressRepository;
 	
 	
 	@Override
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 		String username = null;
 		User loggedInUser = null;
 		username = jwtTokenUtil.getUsernameFromToken(token);
-		loggedInUser = userRepo.findByUsername(username);
+		loggedInUser = userRepository.findByUsername(username);
 		return loggedInUser;
 	}
 	
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 		String username = null;
 		User loggedInUser = null;
 		username = jwtTokenUtil.getUsernameFromToken(token);
-		loggedInUser = userRepo.findByUsername(username);
+		loggedInUser = userRepository.findByUsername(username);
 		return loggedInUser.getId();
 	}
 	
@@ -61,11 +61,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String addUserAddress(String token, UserAddress addressInput) throws JsonProcessingException{
 		User user = getUserByToken(token);
-		List<UserAddress> userAddress = userAddressRepo.getUserAddress(user.getId());
+		List<UserAddress> userAddress = userAddressRepository.getUserAddress(user.getId());
 		if(userAddress.size() > 0)
 			throw new OctopusPermissionException("You already updated the address.");
 		addressInput.setUserObj(user);
-		addressInput = userAddressRepo.saveAndFlush(addressInput);
+		addressInput = userAddressRepository.saveAndFlush(addressInput);
 		return UserFilter.filterUserAddressEntity(addressInput);
 	}
 

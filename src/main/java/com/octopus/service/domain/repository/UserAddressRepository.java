@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.octopus.service.domain.model.UserAddress;
 
 @Repository
-public interface UserAddressRepo extends JpaRepository<UserAddress, Long> {
+public interface UserAddressRepository extends JpaRepository<UserAddress, Long> {
 	
 	@Query(" SELECT userAddress from UserAddress userAddress "
 		 + " JOIN userAddress.userObj userEntity "

@@ -3,7 +3,7 @@ package com.octopus.service.util;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
-import com.octopus.service.domain.SuccessResponse;
+import com.octopus.service.domain.ApiResponse;
 
 public class AppUtil {
 	
@@ -16,8 +16,8 @@ public class AppUtil {
     	return UTCDateTime;
     }
 	
-	public static SuccessResponse frameSuccessResponse(Integer code, String message) {
-    	return new SuccessResponse(code, message);
+	public static ApiResponse frameSuccessResponse(Integer code, String message) {
+    	return new ApiResponse(code, message);
     }
 
 }

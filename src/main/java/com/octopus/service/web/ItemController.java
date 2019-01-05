@@ -16,18 +16,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.octopus.service.domain.SuccessResponse;
+import com.octopus.service.domain.ApiResponse;
 import com.octopus.service.domain.model.Item;
 import com.octopus.service.service.ItemService;
-import com.octopus.service.util.AppResponse;
+import com.octopus.service.util.AppMessages;
 import com.octopus.service.util.AppUtil;
 
 @RestController
 @RequestMapping(value = "/item")
 public class ItemController {
-	
-	private SuccessResponse response = null;
-	
+
+	private ApiResponse response = null;
+
 	@Value("${token.header}")
     private String tokenHeader;
 	
@@ -51,14 +51,14 @@ public class ItemController {
 			method = RequestMethod.POST, 
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessResponse> addItem(HttpServletRequest request, 
-    		@RequestBody Item item) throws JsonProcessingException {
+    public ResponseEntity<ApiResponse> addItem(HttpServletRequest request,
+											   @RequestBody Item item) throws JsonProcessingException {
 		String token = request.getHeader(tokenHeader);
 		itemService.addItem(token, item);
 		response = AppUtil.frameSuccessResponse(
 				HttpStatus.OK.value(), 
-				AppResponse.SUCCESSFUL_ITEM_ADD);
-        return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
+				AppMessages.SUCCESSFUL_ITEM_ADD);
+        return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -66,13 +66,13 @@ public class ItemController {
 			method = RequestMethod.PUT, 
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessResponse> updateItem(HttpServletRequest request, 
-    		@RequestBody Item item) throws JsonProcessingException {
+    public ResponseEntity<ApiResponse> updateItem(HttpServletRequest request,
+												  @RequestBody Item item) throws JsonProcessingException {
 		String token = request.getHeader(tokenHeader);
 		itemService.updateItem(token, item);
 		response = AppUtil.frameSuccessResponse(
 				HttpStatus.OK.value(), 
-				AppResponse.SUCCESSFUL_ITEM_UPDATE);
-        return new ResponseEntity<SuccessResponse>(response, HttpStatus.OK);
+				AppMessages.SUCCESSFUL_ITEM_UPDATE);
+        return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
 	}
 }

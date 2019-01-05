@@ -3,26 +3,22 @@ package com.octopus.service.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.octopus.service.domain.model.Gst;
-import com.octopus.service.domain.model.Item;
-import com.octopus.service.domain.model.ItemType;
-import com.octopus.service.domain.repository.GstRepo;
-import com.octopus.service.domain.repository.ItemRepo;
-import com.octopus.service.domain.repository.ItemTypeRepo;
-import com.octopus.service.exception.OctopusPermissionException;
+import com.octopus.service.domain.repository.GstRepository;
+import com.octopus.service.domain.repository.ItemRepository;
+import com.octopus.service.domain.repository.ItemTypeRepository;
 import com.octopus.service.service.AdminService;
 
 @Service
 public class AdminServiceImpl implements AdminService {
 	
 	@Autowired
-	private GstRepo gstRepo;
+	private GstRepository gstRepository;
 	
 	@Autowired
-	private ItemTypeRepo itemTypeRepo;
+	private ItemTypeRepository itemTypeRepository;
 	
 	@Autowired
-	private ItemRepo itemRepo;
+	private ItemRepository itemRepository;
 
 	
 

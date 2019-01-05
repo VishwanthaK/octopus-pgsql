@@ -8,13 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.octopus.service.domain.model.Item;
+import com.octopus.service.domain.model.ItemType;
 
 @Repository
-public interface ItemRepo extends JpaRepository<Item, Long> {
+public interface ItemTypeRepository extends JpaRepository<ItemType, Long> {
 	
-	@Query(" SELECT itemObj from Item itemObj "
-		 + " JOIN itemObj.itemType itemTypeEntity "
-		 + " WHERE itemObj.recordStatus = 1 AND itemTypeEntity.id = ?1 ")
-	List<Item> getItembyType(Long itemTypeId, Pageable pageable);
+	@Query(" SELECT itemTypeObj from ItemType itemTypeObj "
+		 + " WHERE itemTypeObj.recordStatus = ?1 ")
+	List<ItemType> getItemTypesByStatus(Integer recordStatus);
 
 }

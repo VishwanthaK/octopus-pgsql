@@ -10,7 +10,7 @@ import com.octopus.service.domain.model.Gst;
 import com.octopus.service.domain.model.ItemType;
 
 @Repository
-public interface GstRepo extends JpaRepository<Gst, Long>{
+public interface GstRepository extends JpaRepository<Gst, Long>{
 	
 	@Query(" SELECT gstSlabObj from Gst gstSlabObj "
 		 + " WHERE gstSlabObj.recordStatus = ?1 ")

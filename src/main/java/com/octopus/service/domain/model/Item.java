@@ -10,7 +10,6 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.octopus.service.domain.BaseModel;
 
-
 @Entity
 @Table(name = "mstr_item")
 @JsonFilter("ITEM_FILTER")

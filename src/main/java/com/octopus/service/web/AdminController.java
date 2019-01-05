@@ -12,19 +12,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.octopus.service.domain.SuccessResponse;
-import com.octopus.service.domain.model.Item;
-import com.octopus.service.domain.model.UserAddress;
+import com.octopus.service.domain.ApiResponse;
 import com.octopus.service.service.AdminService;
 import com.octopus.service.service.ItemService;
-import com.octopus.service.util.AppResponse;
-import com.octopus.service.util.AppUtil;
 
 @RestController
 @RequestMapping(value = "/admin")
 public class AdminController {
 	
-	private SuccessResponse response = null;
+	private ApiResponse response = null;
 	
 	@Value("${token.header}")
     private String tokenHeader;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.octopus.service.domain.model.User;
 
 @Repository
-public interface UserRepo extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 	
 	@Query("SELECT user from User user WHERE user.username = ?1")
 	User findByUsername(String username);
