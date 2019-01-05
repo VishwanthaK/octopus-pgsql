@@ -19,7 +19,6 @@ public class OrderHistoryDTO implements Serializable {
 
     private AddressDTO userInfo;
     private List<OrderItemDetailsDTO> itemDetails;
-    private List<OrderDetails> orderDetails;
 
     public Long getOrderId() { return orderId; }
     public void setOrderId(Long orderId) { this.orderId = orderId; }
@@ -47,12 +46,4 @@ public class OrderHistoryDTO implements Serializable {
 
     public List<OrderItemDetailsDTO> getItemDetails() { return itemDetails; }
     public void setItemDetails(List<OrderItemDetailsDTO> itemDetails) { this.itemDetails = itemDetails; }
-
-    public List<OrderDetails> getOrderDetails() {
-        return orderDetails;
-    }
-
-    public void setOrderDetails(List<OrderDetails> orderDetails) {
-        this.orderDetails = orderDetails;
-    }
 }
