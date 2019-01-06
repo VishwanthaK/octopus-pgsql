@@ -17,9 +17,11 @@ import com.octopus.service.dto.OrderData;
 import com.octopus.service.dto.OrderHistoryDTO;
 import com.octopus.service.exception.BadRequestexception;
 import com.octopus.service.service.OrderService;
+import com.octopus.service.service.UserService;
 import com.octopus.service.util.AppHelper;
 import com.octopus.service.util.AppMessages;
 import com.octopus.service.validator.OrderValidator;
+import com.querydsl.core.types.Predicate;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -30,6 +32,8 @@ public class OrderServiceImpl implements OrderService {
 	private OrderRepository orderRepository;
 	@Autowired
 	private OrderDetailsRepository orderDetailsRepository;
+	@Autowired
+	private UserService userService;
 	@Autowired
 	private AppHelper appHelper;
 
@@ -54,10 +58,23 @@ public class OrderServiceImpl implements OrderService {
 
 
 	@Override
-	public ApiResponse orderHistory(String token, Pageable pageable) {
- 		List<OrderHistoryDTO> orderHistory = orderRepository.getOrderHistory(pageable);
+	public ApiResponse orderHistory(String token, Boolean isUserRequest, String filterBy, Predicate predicate, Pageable pageable) {
+		Long userId = null;
+
+		if (isUserRequest) {
+			userId = userService.getUserIdByToken(token);
+		}
+
+ 		List<OrderHistoryDTO> orderHistory = orderRepository.getOrderHistory(userId, filterBy, predicate, pageable);
 
 		return new ApiResponse(HttpStatus.OK.value(), orderHistory);
+	}
+
+	@Override
+	public ApiResponse getOrderDetailsById(String token, Long id) {
+	    OrderHistoryDTO orderDetails = orderRepository.getOrderDetailsById(id);
+
+        return new ApiResponse(HttpStatus.OK.value(), orderDetails);
 	}
 
 	@Override
