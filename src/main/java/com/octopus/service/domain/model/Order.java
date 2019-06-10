@@ -30,7 +30,8 @@ public class Order extends BaseModel {
     private Double itemTotal;
     private Double gstTotal;
     private Double grandTotal;
-    private LocalDateTime deliveryOn;
+    private LocalDateTime deliveryScheduledOn;
+    private LocalDateTime deliveredOn;
 
     private Boolean isDelivered;
     private Boolean isModified;
@@ -64,10 +65,15 @@ public class Order extends BaseModel {
     public Double getGrandTotal() { return grandTotal; }
     public void setGrandTotal(Double grandTotal) { this.grandTotal = grandTotal; }
 
+    @Column(name = "delivery_scheduled_on")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    public LocalDateTime getDeliveryScheduledOn() { return deliveryScheduledOn; }
+    public void setDeliveryScheduledOn(LocalDateTime deliveryScheduledOn) { this.deliveryScheduledOn = deliveryScheduledOn; }
+
     @Column(name = "delivery_on")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
-    public LocalDateTime getDeliveryOn() { return deliveryOn; }
-    public void setDeliveryOn(LocalDateTime deliveryOn) { this.deliveryOn = deliveryOn; }
+    public LocalDateTime getDeliveredOn() { return deliveredOn; }
+    public void setDeliveredOn(LocalDateTime deliveredOn) { this.deliveredOn = deliveredOn; }
 
     @Column(name = "is_delivered")
     public Boolean getDelivered() { return isDelivered; }

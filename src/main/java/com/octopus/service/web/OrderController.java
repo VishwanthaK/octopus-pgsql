@@ -39,6 +39,7 @@ public class OrderController {
 			throws JsonProcessingException {
 		String token = request.getHeader(tokenHeader);
 		response = orderService.makeAnOrder(token, orderDetails);
+
 		return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
 	}
 
@@ -48,10 +49,11 @@ public class OrderController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponse> getOrderHistory(HttpServletRequest request,
 		   	@RequestParam(name = "filterBy", required = false) String filterBy,
-		   	@QuerydslPredicate(root = Order.class) Predicate predicate,
+            @RequestParam(value = "q", required = false) final String search,
 			Pageable pageable){
 		String token = request.getHeader(tokenHeader);
-		response = orderService.orderHistory(token, true, filterBy, predicate, pageable);
+		response = orderService.orderHistory(token, true, filterBy, search, pageable);
+
 		return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
 	}
 
@@ -61,10 +63,11 @@ public class OrderController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponse> getOrders(HttpServletRequest request,
 		 	@RequestParam(name = "filterBy", required = false) String filterBy,
-		 	@QuerydslPredicate(root = Order.class) Predicate predicate,
+            @RequestParam(value = "q", required = false) final String search,
 		 	Pageable pageable) {
 		String token = request.getHeader(tokenHeader);
-		response = orderService.orderHistory(token, false, filterBy, predicate, pageable);
+		response = orderService.orderHistory(token, false, filterBy, search, pageable);
+
 		return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
 	}
 
@@ -76,9 +79,33 @@ public class OrderController {
 			@PathVariable(name = "id") Long orderId) {
 		String token = request.getHeader(tokenHeader);
 		response = orderService.getOrderDetailsById(token, orderId);
+
 		return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
 	}
-	
+
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@RequestMapping(value = "/{id}/cancel",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponse> cancelOrder(HttpServletRequest request,
+			@PathVariable(name = "id") Long orderId) {
+		String token = request.getHeader(tokenHeader);
+		response = orderService.cancelOrder(token, orderId);
+
+		return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/{id}/delivered",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponse> changeDeliveryStatus(HttpServletRequest request,
+												   @PathVariable(name = "id") Long orderId) {
+		String token = request.getHeader(tokenHeader);
+		response = orderService.orderDelivered(orderId);
+
+		return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
+	}
 	
 
 }

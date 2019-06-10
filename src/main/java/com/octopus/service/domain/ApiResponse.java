@@ -8,6 +8,8 @@ public class ApiResponse {
 	private Object data;
 	private Error error;
 
+	public ApiResponse() {}
+
 	public ApiResponse(Integer code, String message) {
 		this.code = code;
 		this.message = message;
@@ -39,6 +41,10 @@ public class ApiResponse {
 
 	public Object getData() {
 		return data;
+	}
+
+	public void setError(Error error) {
+		this.error = error;
 	}
 }
 

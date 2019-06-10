@@ -2,7 +2,6 @@ package com.octopus.service.domain.repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -12,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.Querydsl;
 
 import com.octopus.service.domain.model.Order;
-import com.octopus.service.domain.model.OrderDetails;
 import com.octopus.service.domain.model.QOrder;
 import com.octopus.service.domain.model.QOrderDetails;
 import com.octopus.service.dto.AddressDTO;
@@ -34,38 +32,62 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
     private EntityManager em;
 
     @Override
-    public List<OrderHistoryDTO> getOrderHistory(Long userId, String filterBy, Predicate predicate, Pageable pageable) {
+    public List<OrderHistoryDTO> getOrderHistory(
+            final Long userId,
+            final String filterBy,
+            final Predicate predicate,
+            final Pageable pageable) {
         JPAQuery<?> jpaQuery = new JPAQuery<Void>(em);
         final Querydsl querydsl = new Querydsl(em, new PathBuilder<>(Order.class, "order"));
-        BooleanExpression mainPredicate = null;
+        BooleanExpression userPredicate = null;
 
         if(Objects.nonNull(userId)) {
-            mainPredicate = qOrder.user.id.eq(userId)
+            userPredicate = qOrder.user.id.eq(userId)
                     .and(predicate);
         } else {
-            mainPredicate = qOrder.user.id.ne(0l)
+            userPredicate = qOrder.user.id.ne(0l)
                     .and(predicate);
         }
 
         if (StringUtils.isNotBlank(filterBy)) {
             BooleanExpression filterPredicate = qOrder.orderDetails.any().item.itemName.containsIgnoreCase(filterBy)
                     .or(qOrder.orderDetails.any().item.itemType.typeName.containsIgnoreCase(filterBy)
-                    .or(qOrder.orderNumber.containsIgnoreCase(filterBy)
-                    .or(qOrder.cancelled.eq(Boolean.valueOf(filterBy)))));
-            mainPredicate = filterPredicate.and(mainPredicate);
+                    .or(qOrder.orderNumber.containsIgnoreCase(filterBy)));
+            userPredicate = filterPredicate.and(userPredicate);
         }
 
-        List<OrderHistoryDTO> orderHistory = querydsl.applyPagination(pageable, jpaQuery.from(qOrder)
-            .innerJoin(qOrder).on(qOrder.id.eq(qOrderDetails.order.id).and(mainPredicate))
-            .select(Projections.bean(OrderHistoryDTO.class,
-                qOrder.id.as("orderId"), qOrder.orderNumber, qOrder.itemTotal, qOrder.gstTotal, qOrder.grandTotal,
-                qOrder.delivered, qOrder.cancelled,
-                Projections.bean(AddressDTO.class, qOrder.userAddress.userObj.id.as("userId"), qOrder.userAddress.userObj.fullname.as("userName"),
-                    qOrder.userAddress.userObj.email.as("userEmail"), qOrder.userAddress.userObj.mobileNumber.as("userPhoneNumber"),
-                    qOrder.userAddress.id.as("userAddressId"), qOrder.userAddress.alternateContactNumber, qOrder.userAddress.houseOrFlatNum,
-                    qOrder.userAddress.buildingOrHouseName, qOrder.userAddress.street, qOrder.userAddress.landmark, qOrder.userAddress.locality,
-                    qOrder.userAddress.city, qOrder.userAddress.pincode).as("userInfo")
-                ))).fetchResults().getResults();
+        List<OrderHistoryDTO> orderHistory = querydsl.applyPagination(pageable, jpaQuery
+                .from(qOrder)
+                .innerJoin(qOrder).on(qOrder.id
+                        .eq(qOrderDetails.order.id))
+                .where(userPredicate)
+                .select(Projections.bean(OrderHistoryDTO.class,
+                        qOrder.id.as("orderId"),
+                        qOrder.orderNumber,
+                        qOrder.itemTotal,
+                        qOrder.gstTotal,
+                        qOrder.grandTotal,
+                        qOrder.createdOn,
+                        qOrder.deliveryScheduledOn,
+                        qOrder.deliveredOn,
+                        qOrder.delivered,
+                        qOrder.cancelled,
+                        qOrder.modified,
+                        Projections.bean(AddressDTO.class,
+                                qOrder.userAddress.userObj.id.as("userId"),
+                                qOrder.userAddress.userObj.fullname.as("userName"),
+                                qOrder.userAddress.userObj.email.as("userEmail"),
+                                qOrder.userAddress.userObj.mobileNumber.as("userPhoneNumber"),
+                                qOrder.userAddress.id.as("userAddressId"),
+                                qOrder.userAddress.alternateContactNumber,
+                                qOrder.userAddress.houseOrFlatNum,
+                                qOrder.userAddress.buildingOrHouseName,
+                                qOrder.userAddress.street,
+                                qOrder.userAddress.landmark,
+                                qOrder.userAddress.locality,
+                                qOrder.userAddress.city,
+                                qOrder.userAddress.pincode).as("userInfo")))
+                .orderBy(qOrder.id.desc())).fetchResults().getResults();
 
         return orderHistory;
     }

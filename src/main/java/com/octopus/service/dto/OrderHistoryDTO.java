@@ -3,7 +3,10 @@ package com.octopus.service.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import com.octopus.service.domain.model.OrderDetails;
+import org.joda.time.LocalDateTime;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.octopus.service.util.LocalDateTimeCustomSerializer;
 
 public class OrderHistoryDTO implements Serializable {
 
@@ -14,8 +17,12 @@ public class OrderHistoryDTO implements Serializable {
     private Double itemTotal;
     private Double gstTotal;
     private Double grandTotal;
+    private LocalDateTime createdOn;
+    private LocalDateTime deliveryScheduledOn;
+    private LocalDateTime deliveredOn;
     private boolean delivered;
     private boolean cancelled;
+    private boolean modified;
 
     private AddressDTO userInfo;
     private List<OrderItemDetailsDTO> itemDetails;
@@ -35,11 +42,31 @@ public class OrderHistoryDTO implements Serializable {
     public Double getGrandTotal() { return grandTotal; }
     public void setGrandTotal(Double grandTotal) { this.grandTotal = grandTotal; }
 
+    @JsonSerialize(using = LocalDateTimeCustomSerializer.class)
+    public LocalDateTime getCreatedOn() { return createdOn; }
+    public void setCreatedOn(LocalDateTime createdOn) { this.createdOn = createdOn; }
+
+    @JsonSerialize(using = LocalDateTimeCustomSerializer.class)
+    public LocalDateTime getDeliveryScheduledOn() { return deliveryScheduledOn; }
+    public void setDeliveryScheduledOn(LocalDateTime deliveryScheduledOn) { this.deliveryScheduledOn = deliveryScheduledOn; }
+
+    @JsonSerialize(using = LocalDateTimeCustomSerializer.class)
+    public LocalDateTime getDeliveredOn() { return deliveredOn; }
+    public void setDeliveredOn(LocalDateTime deliveredOn) { this.deliveredOn = deliveredOn; }
+
     public boolean isDelivered() { return delivered; }
     public void setDelivered(boolean delivered) { this.delivered = delivered; }
 
     public boolean isCancelled() { return cancelled; }
     public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }
+
+    public boolean isModified() {
+        return modified;
+    }
+
+    public void setModified(boolean modified) {
+        this.modified = modified;
+    }
 
     public AddressDTO getUserInfo() { return userInfo; }
     public void setUserInfo(AddressDTO userInfo) { this.userInfo = userInfo; }

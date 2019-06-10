@@ -12,10 +12,12 @@ public interface OrderService {
 	
 	ApiResponse makeAnOrder(String token, OrderData orderDetails);
 
-    ApiResponse orderHistory(String token, Boolean isUserRequest, String filterBy, Predicate predicate, Pageable pageable);
+    ApiResponse orderHistory(String token, Boolean isUserRequest, String filterBy, String search, Pageable pageable);
 
     ApiResponse getOrderDetailsById(String token, Long id);
-	
-	void cancelOrder();
+
+    ApiResponse cancelOrder(String token, Long id);
+
+    ApiResponse orderDelivered(Long id);
 
 }

@@ -18,4 +18,6 @@ public class AppMessages {
 
 	//error messages
 	public static final String BAD_REQUEST = "Bad request";
+	public static final String CANCELLED_ORDER = "Your order is cancelled";
+	public static final String DELIVERED_ORDER = "Your order is delivered";
 }
