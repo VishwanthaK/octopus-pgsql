@@ -4,16 +4,16 @@ import static org.apache.commons.lang3.StringUtils.lowerCase;
 
 import java.util.Objects;
 
-import com.octopus.service.domain.model.QOrder;
+import com.octopus.service.domain.model.QOrderEntity;
 import com.octopus.service.exception.InvalidSearchTermException;
 import com.octopus.service.util.querygenerator.AbstractPredicateSearchOperator;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import cz.jirutka.rsql.parser.ast.ComparisonNode;
 
-public class OrderPredicateSearchOperator extends AbstractPredicateSearchOperator<QOrder> {
+public class OrderPredicateSearchOperator extends AbstractPredicateSearchOperator<QOrderEntity> {
 
     public OrderPredicateSearchOperator() {
-        super(QOrder.order);
+        super(QOrderEntity.orderEntity);
     }
 
     @Override

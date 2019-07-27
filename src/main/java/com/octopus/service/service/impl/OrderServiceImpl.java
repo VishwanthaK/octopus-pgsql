@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.octopus.service.domain.ApiResponse;
 import com.octopus.service.domain.Error;
-import com.octopus.service.domain.model.Order;
+import com.octopus.service.domain.model.OrderEntity;
 import com.octopus.service.domain.model.search.OrderPredicateSearchOperator;
 import com.octopus.service.domain.repository.OrderDetailsRepository;
 import com.octopus.service.domain.repository.OrderRepository;
@@ -60,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new BadRequestexception(AppMessages.BAD_REQUEST, errors);
 		}
 
-        final Order order = appHelper.createOrderEntity(token, ordersDetails);
+        final OrderEntity order = appHelper.createOrderEntity(token, ordersDetails);
 
 		if (Objects.isNull(order.getDeliveryScheduledOn())) {
 		    LocalDateTime deliveryOn = LocalDateTime.now();
@@ -111,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public ApiResponse cancelOrder(String token, Long id) {
 		Long userId = userService.getUserIdByToken(token);
-		Order order = orderRepository.findOne(id);
+		OrderEntity order = orderRepository.findOne(id);
 
 		if (Objects.isNull(order) || !userId.equals(order.getUser().getId())) {
 			List<Error> errors = new ArrayList<>();
@@ -127,7 +127,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public ApiResponse orderDelivered(Long id) {
-		Order order = orderRepository.findOne(id);
+		OrderEntity order = orderRepository.findOne(id);
 
 		if (Objects.isNull(order)) {
 			List<Error> errors = new ArrayList<>();

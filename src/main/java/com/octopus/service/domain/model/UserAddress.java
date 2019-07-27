@@ -8,6 +8,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.octopus.service.domain.BaseModel;
+import com.octopus.service.dto.AddressDTO;
 
 @Entity
 @Table(name = "user_address")
@@ -98,5 +99,20 @@ public class UserAddress extends BaseModel {
 	}
 	public void setPincode(Integer pincode) {
 		this.pincode = pincode;
+	}
+
+	public static AddressDTO convertToAddressDTO(final UserAddress userAddress) {
+		final AddressDTO addressDTO = new AddressDTO();
+
+		addressDTO.setAlternateContactNumber(userAddress.getAlternateContactNumber());
+		addressDTO.setBuildingOrHouseName(userAddress.buildingOrHouseName);
+		addressDTO.setHouseOrFlatNum(userAddress.houseOrFlatNum);
+		addressDTO.setLandmark(userAddress.getLandmark());
+		addressDTO.setStreet(userAddress.getStreet());
+		addressDTO.setLocality(userAddress.getLocality());
+		addressDTO.setCity(userAddress.getCity());
+		addressDTO.setPincode(userAddress.getPincode());
+
+		return addressDTO;
 	}
 }

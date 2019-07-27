@@ -136,7 +136,7 @@ public class JwtTokenUtil implements Serializable {
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate())
-                .signWith(SignatureAlgorithm.HS512, secret)
+                    .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
 

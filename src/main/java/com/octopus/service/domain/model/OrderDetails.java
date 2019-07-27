@@ -18,7 +18,7 @@ public class OrderDetails extends BaseModel {
 
     private static final long serialVersionUID = 1887532824129564214L;
 
-    private Order order;
+    private OrderEntity orderEntity;
     private Item item;
     private Gst gst;
 
@@ -30,8 +30,8 @@ public class OrderDetails extends BaseModel {
 
     @ManyToOne
     @JoinColumn(name="order_id")
-    public Order getOrder() { return order; }
-    public void setOrder(Order order) { this.order = order; }
+    public OrderEntity getOrderEntity() { return orderEntity; }
+    public void setOrderEntity(OrderEntity orderEntity) { this.orderEntity = orderEntity; }
 
     @ManyToOne
     @JoinColumn(name="item_id")

@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 import com.octopus.service.domain.model.Gst;
 import com.octopus.service.domain.model.Item;
-import com.octopus.service.domain.model.Order;
 import com.octopus.service.domain.model.OrderDetails;
+import com.octopus.service.domain.model.OrderEntity;
 import com.octopus.service.domain.model.User;
 import com.octopus.service.domain.model.UserAddress;
 import com.octopus.service.dto.OrderData;
@@ -30,8 +30,8 @@ public class AppHelper {
         return String.valueOf(Objects.hash(currentTimestamp));
     }
 
-    public Order createOrderEntity(String token, OrderData ordersDetails) {
-        Order order = new Order();
+    public OrderEntity createOrderEntity(String token, OrderData ordersDetails) {
+        OrderEntity order = new OrderEntity();
         UserAddress userAddress = new UserAddress();
 
         User user = userService.getUserByToken(token);
@@ -46,7 +46,7 @@ public class AppHelper {
         return order;
     }
 
-    public List<OrderDetails> createOrderDetailEntities(Order order, List<OrderItemDTO> orderItemDTOS) {
+    public List<OrderDetails> createOrderDetailEntities(OrderEntity order, List<OrderItemDTO> orderItemDTOS) {
         List<OrderDetails> multipleOrders = new ArrayList<>();
 
         orderItemDTOS.forEach(singleOrderDTO-> {
@@ -56,7 +56,7 @@ public class AppHelper {
 
             item.setId(singleOrderDTO.getItemId());
             gst.setId(singleOrderDTO.getGstId());
-            singleOrder.setOrder(order);
+            singleOrder.setOrderEntity(order);
             singleOrder.setItem(item);
             singleOrder.setGst(gst);
             singleOrder.setQty(singleOrderDTO.getQty());

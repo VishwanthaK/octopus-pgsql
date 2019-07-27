@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.octopus.service.domain.BaseModel;
+import com.octopus.service.dto.UserDTO;
 
 @Entity
 @Table(name = "mstr_user")
@@ -115,6 +116,15 @@ public class User extends BaseModel {
 		this.userAddress = userAddress;
 	}
     
-    
+    public static UserDTO convertToUserDTO(final User user) {
+	    final UserDTO userDTO = new UserDTO();
+
+	    userDTO.setUserId(user.getId());
+	    userDTO.setUserName(user.getFullname());
+	    userDTO.setUserPhoneNumber(user.getMobileNumber());
+	    userDTO.setUserEmail(user.getEmail());
+
+	    return userDTO;
+    }
     
 }

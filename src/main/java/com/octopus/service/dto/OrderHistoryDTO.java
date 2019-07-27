@@ -24,7 +24,7 @@ public class OrderHistoryDTO implements Serializable {
     private boolean cancelled;
     private boolean modified;
 
-    private AddressDTO userInfo;
+    private UserAddressDTO userInfo;
     private List<OrderItemDetailsDTO> itemDetails;
 
     public Long getOrderId() { return orderId; }
@@ -68,8 +68,8 @@ public class OrderHistoryDTO implements Serializable {
         this.modified = modified;
     }
 
-    public AddressDTO getUserInfo() { return userInfo; }
-    public void setUserInfo(AddressDTO userInfo) { this.userInfo = userInfo; }
+    public UserAddressDTO getUserInfo() { return userInfo; }
+    public void setUserInfo(UserAddressDTO userInfo) { this.userInfo = userInfo; }
 
     public List<OrderItemDetailsDTO> getItemDetails() { return itemDetails; }
     public void setItemDetails(List<OrderItemDetailsDTO> itemDetails) { this.itemDetails = itemDetails; }

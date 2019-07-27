@@ -1,7 +1,17 @@
 package com.octopus.service.dto;
 
-public class AddressDTO {
+import java.io.Serializable;
 
+public class UserAddressDTO implements Serializable {
+
+    private static final long serialVersionUID = 8645057929386007650L;
+
+    private Long userId;
+    private Long userAddressId;
+
+    private String userName;
+    private String userEmail;
+    private String userPhoneNumber;
 
     private String alternateContactNumber;
     private String houseOrFlatNum;
@@ -11,6 +21,46 @@ public class AddressDTO {
     private String locality;
     private String city;
     private Integer pincode;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getUserAddressId() {
+        return userAddressId;
+    }
+
+    public void setUserAddressId(Long userAddressId) {
+        this.userAddressId = userAddressId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserPhoneNumber() {
+        return userPhoneNumber;
+    }
+
+    public void setUserPhoneNumber(String userPhoneNumber) {
+        this.userPhoneNumber = userPhoneNumber;
+    }
 
     public String getAlternateContactNumber() {
         return alternateContactNumber;

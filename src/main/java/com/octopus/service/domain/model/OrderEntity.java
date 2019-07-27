@@ -2,6 +2,9 @@ package com.octopus.service.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.octopus.service.domain.BaseModel;
+import com.octopus.service.dto.OrderDTO;
+import com.octopus.service.dto.OrderItemDetailsDTO;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,7 +23,7 @@ import org.joda.time.LocalDateTime;
 @Entity
 @Table(name = "mstr_order")
 @JsonFilter("ORDER_DETAILS_FILTER")
-public class Order extends BaseModel {
+public class OrderEntity extends BaseModel {
 
     private static final long serialVersionUID = 7928042737931007567L;
 
@@ -87,9 +91,45 @@ public class Order extends BaseModel {
     public Boolean getCancelled() { return isCancelled; }
     public void setCancelled(Boolean cancelled) { isCancelled = cancelled; }
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "orderEntity", fetch = FetchType.LAZY)
     public List<OrderDetails> getOrderDetails() { return orderDetails; }
     public void setOrderDetails(List<OrderDetails> orderDetails) { this.orderDetails = orderDetails; }
+
+    public static OrderDTO convertToOrderDTO(final OrderEntity order) {
+        final OrderDTO orderDTO = new OrderDTO();
+
+        orderDTO.setOrderId(order.getId());
+        orderDTO.setOrderNumber(order.orderNumber);
+        orderDTO.setItemTotal(order.itemTotal);
+        orderDTO.setGstTotal(order.gstTotal);
+        orderDTO.setGrandTotal(order.getGrandTotal());
+        orderDTO.setDelivered(order.getDelivered());
+
+        return orderDTO;
+    }
+
+    public static List<OrderItemDetailsDTO> convertToOrderItemDetailsDTOList(final List<OrderDetails> orderDetails) {
+        final List<OrderItemDetailsDTO> orderItemDetailsDTOList = new ArrayList<>();
+
+        orderDetails.forEach(orderDetail -> {
+            final OrderItemDetailsDTO orderItemDetailDTO = new OrderItemDetailsDTO();
+
+            orderItemDetailDTO.setItemId(orderDetail.getItem().getId());
+            orderItemDetailDTO.setItemName(orderDetail.getItem().getItemName());
+            orderItemDetailDTO.setItemSize(orderDetail.getItem().getItemSize());
+            orderItemDetailDTO.setQty(orderDetail.getQty());
+//            orderItemDetailDTO.setQtyType(orderDetail.get);
+            orderItemDetailDTO.setValue(orderDetail.getRate());
+            orderItemDetailDTO.setTotal(orderDetail.getItemTotal());
+            orderItemDetailDTO.setGstId(orderDetail.getGst().getId());
+            orderItemDetailDTO.setGstValue(orderDetail.getGst().getGstValue());
+            orderItemDetailDTO.setGstTotal(orderDetail.getGstTotal());
+
+            orderItemDetailsDTOList.add(orderItemDetailDTO);
+        });
+
+        return orderItemDetailsDTOList;
+    }
 
     @PrePersist
     void onCreate() {
