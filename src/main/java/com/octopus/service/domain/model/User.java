@@ -34,7 +34,7 @@ public class User extends BaseModel {
     
     //mapped by objects
     private List<UserAddress> userAddress;
-   
+    private List<UserRole> userRoles;
 	
 	@Column(name = "fullname", length = 50)
     @NotNull
@@ -115,6 +115,10 @@ public class User extends BaseModel {
 	public void setUserAddress(List<UserAddress> userAddress) {
 		this.userAddress = userAddress;
 	}
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    public List<UserRole> getUserRoles() { return userRoles; }
+    public void setUserRoles(List<UserRole> userRoles) { this.userRoles = userRoles; }
     
     public static UserDTO convertToUserDTO(final User user) {
 	    final UserDTO userDTO = new UserDTO();

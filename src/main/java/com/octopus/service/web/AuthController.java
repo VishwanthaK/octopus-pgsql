@@ -70,7 +70,8 @@ public class AuthController {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails, device);
         final User user = userService.getUserByToken(token);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(token, user.getId()));
+
+        return ResponseEntity.ok(new JwtAuthenticationResponse(token, user.getId(), user.getUserRoles()));
     }
 
     @RequestMapping(value = "/refresh", method = RequestMethod.GET)
@@ -81,7 +82,7 @@ public class AuthController {
         if (jwtTokenUtil.canTokenBeRefreshed(token, user.getCreatedOn())) {
             String refreshedToken = jwtTokenUtil.refreshToken(token);
             final User userByToken = userService.getUserByToken(refreshedToken);
-            return ResponseEntity.ok(new JwtAuthenticationResponse(token, userByToken.getId()));
+            return ResponseEntity.ok(new JwtAuthenticationResponse(token, userByToken.getId(), userByToken.getUserRoles()));
         } else {
             return ResponseEntity.badRequest().body(null);
         }
