@@ -1,11 +1,16 @@
 package com.octopus.service.domain.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.octopus.service.domain.BaseModel;
@@ -28,6 +33,9 @@ public class Item extends BaseModel {
 	private Double sellingPrice;
 	private String qtyType;
 	private Double qtyValue;
+
+	//one to many
+	private List<ItemImage> itemImages;
 	
 	@ManyToOne
 	@JoinColumn(name="gst_id")
@@ -109,5 +117,18 @@ public class Item extends BaseModel {
 	}
 	public void setQtyValue(Double qtyValue) {
 		this.qtyValue = qtyValue;
+	}
+
+	@OneToMany(
+			fetch = FetchType.LAZY,
+			cascade = {CascadeType.REFRESH, CascadeType.REMOVE},
+			mappedBy = "item")
+	@Column(nullable = true)
+	public List<ItemImage> getItemImages() {
+		return itemImages;
+	}
+
+	public void setItemImages(List<ItemImage> itemImages) {
+		this.itemImages = itemImages;
 	}
 }

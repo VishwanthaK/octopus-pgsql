@@ -55,11 +55,14 @@ public class APIWebSecurityConfig extends WebSecurityConfigurerAdapter {
 	        .authorizeRequests()
 		        .antMatchers("/auth/**").permitAll()
 		        .antMatchers("/register/**").permitAll()
+                .antMatchers("/files/**").permitAll()
 	        .anyRequest().authenticated();
     	httpSecurity
         	.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
     	httpSecurity
     		.headers().cacheControl();
     }
+
+
     
 }

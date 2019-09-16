@@ -1,9 +1,13 @@
 package com.octopus.service.util;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,11 +23,12 @@ public class AppUtil {
     			.withZone(dateTimeZone)
     			.parseDateTime(dateTimeInput);
     	DateTime UTCDateTime = localDateTime.toDateTime(DateTimeZone.UTC);
+
     	return UTCDateTime;
     }
 	
 	public static ApiResponse frameSuccessResponse(Integer code, String message) {
-    	return new ApiResponse(code, message);
+		return new ApiResponse(code, message);
     }
 
 	public static JsonNode jsonStringToJsonNode(final String jsonString) {
@@ -41,4 +46,18 @@ public class AppUtil {
 	public static String getJsonValueByKey(final JsonNode json, final String key) {
 		return json.findValue(key).asText();
 	}
+
+	public static void uploadFile(
+			final String uploadFolder,
+			final String fileName,
+			final MultipartFile file) {
+		try {
+			final byte[] bytes = file.getBytes();
+			final Path path = Paths.get(uploadFolder + "/" + fileName);
+			Files.write(path, bytes);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 }

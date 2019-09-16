@@ -19,6 +19,7 @@ public class ItemFilter {
 	private static String[] ITEM_IGNORABLE_FLDS = {"recordStatus","createdOn"};
 	private static String[] ITEM_TYPE_IGNORABLE_FLDS = {"recordStatus","createdOn"};
 	private static String[] GST_IGNORABLE_FLDS = {"recordStatus","createdOn"};
+	private static String[] ITEM_IMAGE_IGNORABLE_FLDS = {"recordStatus","createdOn","item"};
 	
 	public static String filterItemEntity(Item item) 
 			throws JsonProcessingException {   
@@ -40,9 +41,10 @@ public class ItemFilter {
 		String responseJson = null;
 		ObjectMapper mapper = new ObjectMapper();
 		FilterProvider filters = new SimpleFilterProvider()  
-			.addFilter("ITEM_FILTER",SimpleBeanPropertyFilter.serializeAllExcept(ITEM_IGNORABLE_FLDS))
-			.addFilter("ITEM_TYPE_FILTER",SimpleBeanPropertyFilter.serializeAllExcept(ITEM_TYPE_IGNORABLE_FLDS))
-		    .addFilter("GST_FILTER",SimpleBeanPropertyFilter.serializeAllExcept(GST_IGNORABLE_FLDS));
+			.addFilter("ITEM_FILTER", SimpleBeanPropertyFilter.serializeAllExcept(ITEM_IGNORABLE_FLDS))
+			.addFilter("ITEM_TYPE_FILTER", SimpleBeanPropertyFilter.serializeAllExcept(ITEM_TYPE_IGNORABLE_FLDS))
+		    .addFilter("GST_FILTER", SimpleBeanPropertyFilter.serializeAllExcept(GST_IGNORABLE_FLDS))
+			.addFilter("ITEM_IMAGE_FILTER", SimpleBeanPropertyFilter.serializeAllExcept(ITEM_IMAGE_IGNORABLE_FLDS));
 		writer = mapper.writer(filters);
 		responseJson = writer.writeValueAsString(items);
 		return responseJson;

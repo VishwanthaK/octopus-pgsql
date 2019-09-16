@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.octopus.service.domain.ApiResponse;
@@ -74,5 +76,20 @@ public class ItemController {
 				HttpStatus.OK.value(), 
 				AppMessages.SUCCESSFUL_ITEM_UPDATE);
         return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/{itemId}/upload",
+			method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponse> imageUpload(
+			final HttpServletRequest request,
+			@PathVariable("itemId") final Long itemId,
+			@RequestParam("file") final MultipartFile file)
+			throws JsonProcessingException {
+		final String token = request.getHeader(tokenHeader);
+		response = itemService.uploadImage(token, itemId, file);
+
+		return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
 	}
 }

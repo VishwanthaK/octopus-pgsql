@@ -1,6 +1,7 @@
 package com.octopus.service.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -20,6 +21,7 @@ public class OrderItemDetailsDTO implements Serializable {
     private Long gstId;
     private Double gstValue;
     private Double gstTotal;
+    private List<ItemImageDTO> itemImages;
 
     public Long getItemId() {
         return itemId;
@@ -99,6 +101,14 @@ public class OrderItemDetailsDTO implements Serializable {
 
     public void setGstTotal(Double gstTotal) {
         this.gstTotal = gstTotal;
+    }
+
+    public List<ItemImageDTO> getItemImages() {
+        return itemImages;
+    }
+
+    public void setItemImages(List<ItemImageDTO> itemImages) {
+        this.itemImages = itemImages;
     }
 
     @Override

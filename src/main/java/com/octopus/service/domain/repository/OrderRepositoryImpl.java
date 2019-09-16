@@ -14,10 +14,12 @@ import org.springframework.data.jpa.repository.support.Querydsl;
 
 import com.octopus.service.domain.model.OrderEntity;
 import com.octopus.service.domain.model.QItem;
+import com.octopus.service.domain.model.QItemImage;
 import com.octopus.service.domain.model.QOrderDetails;
 import com.octopus.service.domain.model.QOrderEntity;
 import com.octopus.service.domain.model.QUser;
 import com.octopus.service.domain.model.QUserAddress;
+import com.octopus.service.dto.ItemImageDTO;
 import com.octopus.service.dto.OrderHistoryDTO;
 import com.octopus.service.dto.OrderItemDetailsDTO;
 import com.octopus.service.dto.UserAddressDTO;
@@ -38,6 +40,7 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
     private static final QItem qItem = QItem.item;
     private static final QUser qUser = QUser.user;
     private static final QUserAddress qUserAddress = QUserAddress.userAddress;
+    private static final QItemImage qItemImage = QItemImage.itemImage;
 
     @PersistenceContext
     private EntityManager em;
@@ -89,6 +92,18 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
             .where(qOrderEntity.id.eq(id))
             .transform(GroupBy.groupBy(qOrderEntity.id).as(getOrderHistoryBean()));
 
+        /*final Map<Long, OrderHistoryDTO> orderDetails =  jpaQuery
+                .from(qOrderEntity)
+                .innerJoin(qOrderDetails)
+                .on(qOrderDetails.orderEntity.id.eq(qOrderEntity.id))
+                .innerJoin(qItem)
+                .on(qItem.id.eq(qOrderDetails.item.id))
+                .innerJoin(qItemImage)
+                .on(qItemImage.item.id.eq(qItem.id))
+                .select(getOrderHistoryBean())
+                .where(qOrderEntity.id.eq(id))
+                .transform(GroupBy.groupBy(qOrderEntity.id).as(getOrderHistoryBean()));*/
+
         return orderDetails.get(id);
     }
 
@@ -137,9 +152,16 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
                         qOrderEntity.userAddress.id.as("userAddressId"), qOrderEntity.userAddress.alternateContactNumber, qOrderEntity.userAddress.houseOrFlatNum,
                         qOrderEntity.userAddress.buildingOrHouseName, qOrderEntity.userAddress.street, qOrderEntity.userAddress.landmark, qOrderEntity.userAddress.locality,
                         qOrderEntity.userAddress.city, qOrderEntity.userAddress.pincode).as("userInfo"),
-                GroupBy.list(Projections.bean(OrderItemDetailsDTO.class, qOrderDetails.item.id.as("itemId"), qOrderDetails.item.itemName,
-                        qOrderDetails.item.itemSize, qOrderDetails.qty, qOrderDetails.rate.as("value"), qOrderDetails.itemTotal.as("total"),
-                        qOrderDetails.gst.id.as("gstId"), qOrderDetails.gst.gstValue, qOrderDetails.gstTotal)).as("itemDetails"));
+                GroupBy.list(Projections.bean(OrderItemDetailsDTO.class,
+                        qOrderDetails.item.id.as("itemId"),
+                        qOrderDetails.item.itemName,
+                        qOrderDetails.item.itemSize,
+                        qOrderDetails.qty, qOrderDetails.rate.as("value"),
+                        qOrderDetails.itemTotal.as("total"),
+                        qOrderDetails.gst.id.as("gstId"),
+                        qOrderDetails.gst.gstValue,
+                        qOrderDetails.gstTotal
+                )).as("itemDetails"));
     }
 
     private QBean<OrderHistoryDTO> getDeliveryDetails() {

@@ -8,5 +8,5 @@ import com.octopus.service.domain.model.OctopusSettings;
 @Repository
 public interface OctopusSettingsRepository extends PagingAndSortingRepository<OctopusSettings, Long> {
 
-    public OctopusSettings findOneBySettingKeyAndRecordStatus(String settingKey, Integer recordStatus);
+    OctopusSettings findOneBySettingKeyAndRecordStatus(String settingKey, Integer recordStatus);
 }
