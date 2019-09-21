@@ -92,6 +92,7 @@ public class ItemServiceImpl implements ItemService {
 		item.setId(itemId);
 		itemImage.setItem(item);
 		itemImage.setImagePath(uploadFolder + "/" +fileName);
+		itemImage.setImageAccessPath(fileName);
 		itemImageRepository.save(itemImage);
 
 		return AppUtil.frameSuccessResponse(HttpStatus.OK.value(), AppMessages.SUCCESSFUL_UPLOAD);

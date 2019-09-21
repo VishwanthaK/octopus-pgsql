@@ -19,7 +19,7 @@ public class ItemFilter {
 	private static String[] ITEM_IGNORABLE_FLDS = {"recordStatus","createdOn"};
 	private static String[] ITEM_TYPE_IGNORABLE_FLDS = {"recordStatus","createdOn"};
 	private static String[] GST_IGNORABLE_FLDS = {"recordStatus","createdOn"};
-	private static String[] ITEM_IMAGE_IGNORABLE_FLDS = {"recordStatus","createdOn","item"};
+	private static String[] ITEM_IMAGE_IGNORABLE_FLDS = {"recordStatus","createdOn","item", "imagePath"};
 	
 	public static String filterItemEntity(Item item) 
 			throws JsonProcessingException {   

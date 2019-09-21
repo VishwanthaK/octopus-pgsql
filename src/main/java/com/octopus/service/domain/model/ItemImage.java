@@ -20,6 +20,7 @@ public class ItemImage extends BaseModel {
 	private Item item;
 	
 	private String imagePath;
+	private String imageAccessPath;
 
 	@ManyToOne
 	@JoinColumn(name="item_id")
@@ -37,4 +38,8 @@ public class ItemImage extends BaseModel {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
+
+	@Column(name = "image_access_path")
+	public String getImageAccessPath() { return imageAccessPath; }
+	public void setImageAccessPath(String imageAccessPath) { this.imageAccessPath = imageAccessPath; }
 }
