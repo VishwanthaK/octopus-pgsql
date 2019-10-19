@@ -56,11 +56,7 @@ public class ItemController {
     public ResponseEntity<ApiResponse> addItem(HttpServletRequest request,
 											   @RequestBody Item item) throws JsonProcessingException {
 		String token = request.getHeader(tokenHeader);
-		itemService.addItem(token, item);
-		response = AppUtil.frameSuccessResponse(
-				HttpStatus.OK.value(), 
-				AppMessages.SUCCESSFUL_ITEM_ADD);
-        return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
+        return new ResponseEntity<>(itemService.addItem(token, item), HttpStatus.OK);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")

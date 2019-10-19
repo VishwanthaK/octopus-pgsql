@@ -10,6 +10,7 @@ public interface AppConstants {
 	String DATE_TIME_INPUT_FORMAT = "dd-MM-yyyy HH:mm:ss";
 	DateTimeFormatter DATETIME_FORMATTER = DateTimeFormat.forPattern(DATE_TIME_INPUT_FORMAT);
 	String FILE_UPLOAD_PATH_KEY = "FILE_UPLOAD_PATH";
+	String ID_LABEL = "id";
 
 	interface USER_SETTING_KEYS {
 		String ENABLE_CUSTOM_LOCALITY = "enableCustomLocality";

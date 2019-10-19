@@ -31,6 +31,10 @@ public class AppUtil {
 		return new ApiResponse(code, message);
     }
 
+	public static ApiResponse frameSuccessResponse(Integer code, String message, Object data) {
+		return new ApiResponse(code, message, data);
+	}
+
 	public static JsonNode jsonStringToJsonNode(final String jsonString) {
 		JsonNode jsonNode = null;
 

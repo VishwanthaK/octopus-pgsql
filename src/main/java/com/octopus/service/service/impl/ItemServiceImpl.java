@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.octopus.service.domain.ApiResponse;
 import com.octopus.service.domain.model.Item;
 import com.octopus.service.domain.model.ItemImage;
@@ -34,6 +37,7 @@ public class ItemServiceImpl implements ItemService {
 
 	private static final Set<String> VALID_IMAGE_FILE_EXTENSIONS = Collections.unmodifiableSet(
 			new HashSet<>(Arrays.asList("jpeg", "jpg", "png")));
+	private static final ObjectMapper MAPPER = new ObjectMapper();
 	
 	@Autowired
 	private ItemRepository itemRepository;
@@ -44,8 +48,14 @@ public class ItemServiceImpl implements ItemService {
 
 	
 	@Override
-	public void addItem(String token, Item item) {
-		itemRepository.saveAndFlush(item);
+	public ApiResponse addItem(String token, Item item) {
+		item = itemRepository.saveAndFlush(item);
+		final ObjectNode node = MAPPER.createObjectNode();
+		node.put(AppConstants.ID_LABEL, item.getId());
+		final ApiResponse apiResponse = AppUtil.frameSuccessResponse(
+				HttpStatus.OK.value(), AppMessages.SUCCESSFUL_ITEM_ADD, node);
+
+		return apiResponse;
 	}
 
 	@Override

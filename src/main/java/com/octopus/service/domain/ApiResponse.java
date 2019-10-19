@@ -21,6 +21,12 @@ public class ApiResponse {
 		this.error = error;
 	}
 
+	public ApiResponse(Integer code, String message, Object data) {
+		this.code = code;
+		this.message = message;
+		this.data = data;
+	}
+
 	public ApiResponse(Integer code, Object data) {
 		this.code = code;
 		this.data = data;
